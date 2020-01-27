@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-post',
@@ -7,16 +7,38 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostComponent implements OnInit {
 
-  postName: string ='Post';
-  postStatus : string ='Love it';
+  postDate = new Date();
+  @Input() postName: string;
+  @Input() postStatus: string;
+  @Input() postContent: string;
+  postCount: number = 0;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  getStatus() {
-    return this.postStatus;
-  }
+
+  getColor() {
+    if(this.postCount < 0) {
+      return 'red';   
+    }
+    else if(this.postCount > 0) {
+      return 'green';
+    }
+}
+
+    increment() {
+     return this.postCount ++;
+      
+    };
+    decrement() {
+      { return this.postCount --}
+      ;
+    };
+
+    
 
 }
+
+
