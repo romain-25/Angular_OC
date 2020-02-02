@@ -46,4 +46,12 @@ appareilSubscription: Subscription;
   onEteindre(){
     this.appareilService.switchOffAll();
   }
+
+  onSave(){
+    this.appareilService.saveAppareilsToServer();
+  }
+
+  onFetch() {
+    this.appareilService.getAppareilsFormServer();
+  }
 }

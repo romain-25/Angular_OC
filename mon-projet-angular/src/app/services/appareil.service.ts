@@ -1,26 +1,19 @@
 import { Subject } from 'rxjs/Subject';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class AppareilService {
 
   appareilSubject = new Subject<any[]>();
 
     private appareils = [
-        {
-          id: 1,
-          name: 'Machine à laver',
-          status: 'éteint'
-        },
-        {
-          id: 2,
-          name: 'Frigo',
-          status: 'allumé'
-        },
-        {
-          id: 3,
-          name: 'Ordinateur',
-          status: 'éteint'
-        }
+
       ];
+
+      constructor(private httpClient: HttpClient) {
+
+      }
 
       emitAppareilSubject(){
         this.appareilSubject.next(this.appareils.slice());
@@ -71,5 +64,32 @@ export class AppareilService {
 
         this.appareils.push(appareilObject);
         this.emitAppareilSubject();
+      }
+
+      saveAppareilsToServer() {
+        this.httpClient
+        .put('https://angularoc-c0d3c.firebaseio.com/appareils.json', this.appareils)
+        .subscribe(
+          () => {
+            console.log('Enregistrement terminé !');
+          },
+          (error) => {
+            console.log('Erreur de sauvegarde ! ' + error);
+          }
+        )
+      }
+
+      getAppareilsFormServer() {
+        this.httpClient
+        .get<any[]>('https://angularoc-c0d3c.firebaseio.com/appareils.json')
+        .subscribe(
+          (response) => {
+            this.appareils = response;
+            this.emitAppareilSubject();
+          },
+          (error) => {
+            console.log('Erreur de chargement ! ' + error);
+          }
+        );
       }
 }
